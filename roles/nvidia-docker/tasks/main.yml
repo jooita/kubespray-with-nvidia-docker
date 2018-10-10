@@ -1,0 +1,67 @@
+---
+- name: gather os specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution|lower }}-{{ ansible_distribution_version|lower|replace('/', '_') }}.yml"
+        - "{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}.yml"
+        - "{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version|lower|replace('/', '_') }}.yml"
+        - "{{ ansible_distribution|lower }}.yml"
+        - "{{ ansible_os_family|lower }}.yml"
+        - defaults.yml
+      paths:
+        - ../vars
+      skip: true
+  tags:
+    - facts
+
+- import_tasks: pre-upgrade.yml
+
+- name: ensure nvidia_docker repository public key is installed
+  action: "{{ nvidia_docker_repo_key_info.pkg_key }}"
+  args:
+    id: "{{item}}"
+    url: "{{nvidia_docker_repo_key_info.url}}"
+    state: present
+  register: keyserver_task_result
+  until: keyserver_task_result|succeeded
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"
+  with_items: "{{ nvidia_docker_repo_key_info.repo_keys }}"
+  when: not (ansible_os_family in ["CoreOS", "Container Linux by CoreOS", "RedHat", "Suse"] or is_atomic)
+
+- name: ensure nvidia_docker repository is enabled
+  action: "{{ nvidia_docker_repo_info.pkg_repo }}"
+  args:
+    repo: "{{item}}"
+    state: present
+  with_items: "{{ nvidia_docker_repo_info.repos }}"
+  when: not (ansible_os_family in ["CoreOS", "Container Linux by CoreOS", "RedHat", "Suse"] or is_atomic) and (nvidia_docker_repo_info.repos|length > 0)
+
+- name: Configure nvidia_docker repository on RedHat/CentOS
+  template:
+    src: "rh_nvidia-docker.repo.j2"
+    dest: "/etc/yum.repos.d/nvidia-docker.repo"
+  when: ansible_distribution in ["CentOS","RedHat"] and not is_atomic
+
+- name: ensure nvidia_docker packages are installed
+  action: "{{ nvidia_docker_package_info.pkg_mgr }}"
+  args:
+    pkg: "{{item.name}}"
+    force: "{{item.force|default(omit)}}"
+    state: present
+  register: nvidia_docker_task_result
+  until: nvidia_docker_task_result|succeeded
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"
+  with_items: "{{ nvidia_docker_package_info.pkgs }}"
+  notify: 
+    - remove daemon.json
+    - restart docker
+  when: not (ansible_os_family in ["CoreOS", "Container Linux by CoreOS"] or is_atomic) and (nvidia_docker_package_info.pkgs|length > 0)
+
+- name: ensure service is started if nvidia_docker packages are already present
+  service:
+    name: docker
+    state: started
+  when: nvidia_docker_task_result is not changed

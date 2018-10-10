@@ -1,0 +1,19 @@
+---
+- name: Ensure old versions of nvidia-docker are not installed. | Debian
+  package:
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - libnvidia-container1
+  when:
+    - ansible_os_family == 'Debian'
+
+- name: Ensure old versions of nvidia-docker are not installed. | RedHat
+  package:
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - libnvidia-container1
+  when:
+    - ansible_os_family == 'RedHat'
+    - not is_atomic

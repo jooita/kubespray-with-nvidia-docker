@@ -1,0 +1,29 @@
+[libnvidia-container]
+name=libnvidia-container
+baseurl={{ libnvidia_container_rh_repo_base_url }}
+repo_gpgcheck=1
+gpgcheck=0
+enabled=1
+gpgkey={{ libnvidia_container_rh_repo_gpgkey }}
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+
+[nvidia-container-runtime]
+name=nvidia-container-runtime
+baseurl={{ nvidia_container_runtime_rh_repo_base_url }}
+repo_gpgcheck=1
+gpgcheck=0
+enabled=1
+gpgkey={{ nvidia_container_runtime_rh_repo_gpgkey }}
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+
+[nvidia-docker]
+name=nvidia-docker
+baseurl={{ nvidia_docker_rh_repo_base_url }}
+repo_gpgcheck=1
+gpgcheck=0
+enabled=1
+gpgkey={{ nvidia_docker_rh_repo_gpgkey }}
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt

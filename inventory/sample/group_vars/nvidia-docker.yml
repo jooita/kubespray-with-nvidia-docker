@@ -1,0 +1,7 @@
+docker_options: "--default-runtime nvidia --add-runtime nvidia=/usr/bin/nvidia-container-runtime --insecure-registry={{ kube_service_addresses }} --graph={{ docker_daemon_graph }}  {{ docker_log_opts }}"
+
+kube_feature_gates:
+  - "PersistentLocalVolumes={{ local_volume_provisioner_enabled | string }}"
+  - "VolumeScheduling={{ local_volume_provisioner_enabled | string }}"
+  - "MountPropagation={{ local_volume_provisioner_enabled | string }}"
+  - "DevicePlugins=true"

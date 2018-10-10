@@ -1,0 +1,21 @@
+---
+nvidia_docker_kernel_min_version: '3.10'
+
+nvidia_docker_versioned_pkg:
+  'latest': nvidia-docker2
+  '1.13': nvidia-docker2-2.0.3-1.docker1.13.1
+  '17.03': nvidia-docker2-2.0.3-1.docker17.03.2.ce
+  'stable': nvidia-docker2-2.0.3-1.docker17.03.2.ce
+
+nvidia_docker_package_info:
+  pkg_mgr: yum
+  pkgs:
+    - name: "{{ nvidia_docker_versioned_pkg[docker_version | string] }}"
+
+nvidia_docker_repo_key_info:
+  pkg_key: ''
+  repo_keys: []
+
+nvidia_docker_repo_info:
+  pkg_repo: ''
+  repos: []

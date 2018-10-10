@@ -1,0 +1,27 @@
+---
+nvidia_docker_kernel_min_version: '3.10'
+
+nvidia_docker_versioned_pkg:
+  'latest': nvidia-docker2 
+  '1.13': nvidia-docker2=2.0.3-1.docker1.13.1
+  '17.03': nvidia-docker2=2.0.3-1.docker17.03.2.ce
+  'stable': nvidia-docker2=2.0.3-1.docker17.03.2.ce
+
+nvidia_docker_package_info:
+  pkg_mgr: apt
+  pkgs:
+    - name: "{{ nvidia_docker_versioned_pkg[docker_version | string] }}"
+      force: yes
+
+nvidia_docker_repo_key_info:
+  pkg_key: apt_key
+  url: '{{ nvidia_docker_debian_repo_gpgkey }}'
+  repo_keys:
+    - "{{ lookup('file', 'nvidia-docker_gpg') }}"
+
+nvidia_docker_repo_info:
+  pkg_repo: apt_repository
+  repos:
+    - deb {{ libnvidia_container_debian_repo_base_url }}
+    - deb {{ nvidia_container-runtime_debian_repo_base_url }}
+    - deb {{ nvidia_docker_debian_repo_base_url }}

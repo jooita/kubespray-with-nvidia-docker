@@ -1,0 +1,26 @@
+---
+docker_version: 17.03
+
+# CentOS/RedHat nvidia_docker repo
+libnvidia_container_rh_repo_base_url: https://nvidia.github.io/libnvidia-container/centos7/$basearch
+libnvidia_container_rh_repo_gpgkey: https://nvidia.github.io/libnvidia-container/gpgkey
+nvidia_container_runtime_rh_repo_base_url: https://nvidia.github.io/nvidia-container-runtime/centos7/$basearch
+nvidia_container_runtime_rh_repo_gpgkey: https://nvidia.github.io/nvidia-container-runtime/gpgkey
+nvidia_docker_rh_repo_base_url: https://nvidia.github.io/nvidia-docker/centos7/$basearch
+nvidia_docker_rh_repo_gpgkey: https://nvidia.github.io/nvidia-docker/gpgkey
+
+# Ubuntu nvidia_docker repo
+libnvidia_container_ubuntu_repo_base_url: https://nvidia.github.io/libnvidia-container/ubuntu16.04/$(ARCH)
+libnvidia_container_ubuntu_repo_gpgkey: https://nvidia.github.io/libnvidia-container/gpgkey
+nvidia_container_runtime_ubuntu_repo_base_url: https://nvidia.github.io/nvidia-container-runtime/ubuntu16.04/$(ARCH)
+nvidia_container_runtime_ubuntu_repo_gpgkey: https://nvidia.github.io/nvidia-container-runtime/gpgkey
+nvidia_docker_ubuntu_repo_base_url: https://nvidia.github.io/nvidia-docker/ubuntu16.04/$(ARCH)
+nvidia_docker_ubuntu_repo_gpgkey: https://nvidia.github.io/nvidia-docker/gpgkey
+
+# Debian nvidia_docker repo
+libnvidia_container_debian_repo_base_url: https://nvidia.github.io/libnvidia-container/debian9/$(ARCH)
+libnvidia_container_debian_repo_gpgkey: https://nvidia.github.io/libnvidia-container/gpgkey
+nvidia_container_runtime_debian_repo_base_url: https://nvidia.github.io/nvidia-container-runtime/debian9/$(ARCH)
+nvidia_container_runtime_debian_repo_gpgkey: https://nvidia.github.io/nvidia-container-runtime/gpgkey
+nvidia_docker_debian_repo_base_url: https://nvidia.github.io/nvidia-docker/debian9/$(ARCH)
+nvidia_docker_debian_repo_gpgkey: https://nvidia.github.io/nvidia-docker/gpgkey
